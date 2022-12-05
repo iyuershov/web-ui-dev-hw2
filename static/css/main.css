@@ -435,19 +435,19 @@ body {
     margin-right: 5px;
 }
 
-.chart__legend__item#date-trunc {
+.chart__legend__item.date-trunc {
     margin-right: 0px;
 }
 
-#offline > .icon {
+.offline > .icon {
     color: #347AE2;
 }
 
-#online > .icon {
+.online > .icon {
     color: #FF9500;
 }
 
-#date-trunc > select {
+.date-trunc > select {
     padding: 5px;
     border-style: solid;
     border-color: #E6EDFF;
@@ -470,7 +470,7 @@ body {
     text-align: left;
 }
 
-#date-trunc > select:hover {
+.date-trunc > select:hover {
     border-style: solid;
     border-color:#347AE2;
     border-width: 1px;

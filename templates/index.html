@@ -7,8 +7,8 @@
     <meta name="viewport" content="wclassth=device-wclassth, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-    <link rel="stylesheet" href="../../web-ui-dev-hw1/static/css/main.css">
-    <link rel="icon" type="image/x-icon" href="../../web-ui-dev-hw1/static/images/logo.svg">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="icon" type="image/x-icon" href="../static/images/logo.svg">
     <script src="https://kit.fontawesome.com/fd853e6140.js" crossorigin="anonymous"></script>
 
     <title>Dashboard</title>
@@ -20,7 +20,7 @@
             <div class="sidebar__content">
                 <div class="logo">
                     <div class="logo__image">
-                        <img src="../../web-ui-dev-hw1/static/images/logo.svg" alt="Aeon">
+                        <img src="../static/images/logo.svg" alt="Aeon">
                     </div>
                     <div class="logo__text">
                         Aeon
@@ -70,7 +70,9 @@
                                 Checkout
                             </div>
                             <div id="checkout-number">
-                                <i class="fa-solid fa-2 icon"></i>
+                                {% if user.checkouts > 0 %}
+                                <i class="fa-solid fa-{{ user.checkouts if user.checkouts < 10 else 'bell'}} icon"></i>
+                                {% endif %}
                             </div>
                             <div class="nav-menu__thumb"></div>
                         </a>
@@ -123,7 +125,7 @@
                 <div class="header">
                     <div class="header__text">
                         <div class="header__title">
-                            Welcome Back, Marci
+                            Welcome Back, {{ user.first_name }}
                         </div>
                         <div class="header__subtitle">
                             Here is the information about all your orders
@@ -137,8 +139,8 @@
                             <i class="fa-regular fa-bell icon"></i>
                         </div>
                         <a class="header__menu__item" id="user-info" href="#">
-                            <img src="../../web-ui-dev-hw1/static/images/avatar.png">
-                            <div class="user-name">Marci  Fumons</div>
+                            <img src="../static/images/{{ user.avatar }}">
+                            <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
                             <div class="user-info__expand">
                                 <i class="fa-solid fa-chevron-down icon"></i>
                             </div>
@@ -147,58 +149,25 @@
                 </div>
 
                 <div class="cards">
+                    {% for item in dashboard_data %}
+                    {% if loop.index0 == 0 %}
                     <div class="cards__item first__cards__item">
+                    {% else %}
+                    <div class="cards__item">
+                    {% endif %}
                         <div class="cards__item__number">
-                            89,935
+                            {{ item.number }}
                             <button><i class="fa-solid fa-users icon"></i></button>
                         </div>
                         <div class="cards__item__text">
-                            Total users
+                            {{ item.title }}
                         </div>
                         <div class="cards__item__subtext">
-                            <i class="fa-solid fa-arrow-up icon"></i>
-                            10.2 +1.01% this week
+                            <i class="fa-solid fa-arrow-{{ 'up' if item.percentage[0] == '+' else 'down' }} icon"></i>
+                            {{ item.diff }} &nbsp;&nbsp;&nbsp; {{ item.percentage }} this week
                         </div>
                     </div>
-                    <div class="cards__item">
-                        <div class="cards__item__number">
-                            23,283.5
-                            <button><i class="fa-solid fa-bag-shopping icon"></i></button>
-                        </div>
-                        <div class="cards__item__text">
-                            Total products
-                        </div>
-                        <div class="cards__item__subtext">
-                            <i class="fa-solid fa-arrow-up icon"></i>
-                            3.1 +0.49% this week
-                        </div>
-                    </div>
-                    <div class="cards__item">
-                        <div class="cards__item__number">
-                            46,827
-                            <button><i class="fa-regular fa-circle-check icon"></i></button>
-                        </div>
-                        <div class="cards__item__text">
-                            Total users
-                        </div>
-                        <div class="cards__item__subtext">
-                            <i class="fa-solid fa-arrow-down icon"></i>
-                            2.56 -0.91% this week
-                        </div>
-                    </div>
-                    <div class="cards__item">
-                        <div class="cards__item__number">
-                            124,854
-                            <button><i class="fa-solid fa-rotate-left icon"></i></button>
-                        </div>
-                        <div class="cards__item__text">
-                            Refunded
-                        </div>
-                        <div class="cards__item__subtext">
-                            <i class="fa-solid fa-arrow-up icon"></i>
-                            7.2 +1.51% this week
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
 
                 <div class="charts">
@@ -208,15 +177,15 @@
                                 Orders Analytics
                             </div>
                             <div class="chart__legend">
-                                <div class="chart__legend__item" id="offline">
+                                <div class="chart__legend__item offline">
                                     <i class="fa-solid fa-circle icon"></i>
                                     Offline orders
                                 </div>
-                                <div class="chart__legend__item" id="online">
+                                <div class="chart__legend__item online">
                                     <i class="fa-solid fa-circle icon"></i>
                                     Online orders
                                 </div>
-                                <div class="chart__legend__item" id="date-trunc">
+                                <div class="chart__legend__item date-trunc">
                                     <select>
                                         <option value="mon">Monthly</option>
                                         <option value="week">Weekly</option>
@@ -226,7 +195,7 @@
                             </div>
                         </div>
                         <div class="chart__content">
-                            <img src="../../web-ui-dev-hw1/static/images/orders-chart.svg">
+                            <img src="../static/images/orders-chart.svg">
                         </div>
                     </div>
                     <div class="chart" id="earnings-chart">
@@ -237,14 +206,14 @@
                             </div>
                         </div>
                         <div class="chart__content">
-                            <img src="../../web-ui-dev-hw1/static/images/earnings-chart.svg">
+                            <img src="../static/images/earnings-chart.svg">
                         </div>
                         <div class="chart__legend">
-                            <div class="chart__legend__item" id="offline">
+                            <div class="chart__legend__item offline">
                                 <i class="fa-solid fa-circle icon"></i>
                                 Offline
                             </div>
-                            <div class="chart__legend__item" id="online">
+                            <div class="chart__legend__item online">
                                 <i class="fa-solid fa-circle icon"></i>
                                 Online
                             </div>
@@ -261,7 +230,7 @@
                         <div class="table__title__text">
                             Order List
                         </div>
-                        <div class="ttable__title__option" id="date-trunc">
+                        <div class="table__title__option date-trunc">
                             <select>
                                 <option value="mon">Monthly</option>
                                 <option value="week">Weekly</option>
@@ -305,29 +274,36 @@
                             </div>
                         </div>
                         <div class="table__data">
+                            {% for order in orders %}
                             <div class="table__row">
                                 <div class="table__row__item short">
-                                    1
+                                    {{ loop.index }}
                                 </div>
                                 <div class="table__row__item middle">
-                                    #12594
+                                    {{ order.id }}
                                 </div>
                                 <div class="table__row__item">
-                                    Dec 1, 2021
+                                    {{ order.date }}
                                 </div>
                                 <div class="table__row__item long">
-                                    Frank Murlo
+                                    {{ order.customer }}
                                 </div>
                                 <div class="table__row__item long">
-                                    312 S Wilmette Ave
+                                    {{ order.location }}
                                 </div>
                                 <div class="table__row__item">
-                                    $847.69
+                                    {{ order.amount }}
                                 </div>
                                 <div class="table__row__item">
-                                    <span class="order-status new">
+                                    <span class="order-status {{ order.status }}">
                                         <i class="fa-solid fa-circle icon"></i>
+                                        {% if order.status == 'new' %}
                                         New Order
+                                        {% elif order.status == 'delivery' %}
+                                        On Delivery
+                                        {% else %}
+                                        Unknown status
+                                        {% endif %}
                                     </span>
                                 </div>
                                 <div class="table__row__item middle">
@@ -336,37 +312,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="table__row">
-                                <div class="table__row__item short">
-                                    2
-                                </div>
-                                <div class="table__row__item middle">
-                                    #12596
-                                </div>
-                                <div class="table__row__item">
-                                    Oct 4, 2022
-                                </div>
-                                <div class="table__row__item long">
-                                    Ivan Ershov
-                                </div>
-                                <div class="table__row__item long">
-                                    312 S Wilmette Ave
-                                </div>
-                                <div class="table__row__item">
-                                    $6147.00
-                                </div>
-                                <div class="table__row__item">
-                                    <span class="order-status delivery">
-                                        <i class="fa-solid fa-circle icon"></i>
-                                        On delivery
-                                    </span>
-                                </div>
-                                <div class="table__row__item middle">
-                                    <div class="action__button" onclick="location.href='#';">
-                                        <i class="fa-solid fa-ellipsis icon"></i>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
